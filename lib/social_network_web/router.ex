@@ -20,7 +20,8 @@ defmodule SocialNetworkWeb.Router do
   end
 
 	scope "/api/v1", SocialNetworkWeb do
-		resources "/users", UserController
+		resources "/users", UserController, only: [:index]
+		post "/users/create", RegistrationController, :create
 	end
   # Other scopes may use custom stacks.
   # scope "/api", SocialNetworkWeb do
