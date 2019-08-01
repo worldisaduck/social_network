@@ -20,6 +20,8 @@ defmodule SocialNetworkWeb.Router do
   end
 
 	scope "/api", SocialNetworkWeb do
+		pipe_through :api
+
 		scope "/v1" do
 			post "/users/create", Api.V1.RegistrationController, :create
 		end
