@@ -15,7 +15,7 @@ defmodule SocialNetworkWeb.Api.V1.RegistrationController do
 					value = elem(error, 1) |> elem(0)
 					%{elem(error, 0) => value}
 				end)
-				render(conn, "error.json", %{"errors" => errors})
+			render(conn, "error.json", %{"errors" => errors})
 		end
 	end
 end
