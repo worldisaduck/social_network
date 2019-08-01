@@ -1,4 +1,4 @@
-defmodule SocialNetworkWeb.RegistrationController do
+defmodule SocialNetworkWeb.Api.V1.RegistrationController do
 	use SocialNetworkWeb, :controller 
 	require IEx
 	alias SocialNetwork.Accounts
@@ -6,7 +6,7 @@ defmodule SocialNetworkWeb.RegistrationController do
 
   action_fallback SocialNetworkWeb.FallbackController
 
-	def create(conn, %{"user" => user}) do
+	def create(conn, %{"user" => user_params}) do
 		render(conn, "success.json")
 	end
 end

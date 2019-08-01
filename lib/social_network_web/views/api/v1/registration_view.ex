@@ -1,4 +1,4 @@
-defmodule SocialNetworkWeb.RegistrationView do
+defmodule SocialNetworkWeb.Api.V1.RegistrationView do
 	use SocialNetworkWeb, :view
 	alias SocialNetworkWeb.RegistrationView
 
