@@ -12,6 +12,7 @@ config :social_network,
 
 # Configures the endpoint
 config :social_network, SocialNetworkWeb.Endpoint,
+	issuer: "Top Social Networks",
   url: [host: "localhost"],
   secret_key_base: "CZBXWBhgJdunXb5zoK0IaYtLTpOi9lI09nV7bU++xAtExv+mJr0guQoRlAd7LEDQ",
   render_errors: [view: SocialNetworkWeb.ErrorView, accepts: ~w(html json)],

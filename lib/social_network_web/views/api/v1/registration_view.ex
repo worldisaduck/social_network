@@ -3,9 +3,9 @@ defmodule SocialNetworkWeb.Api.V1.RegistrationView do
 	require IEx
 	alias SocialNetworkWeb.RegistrationView
 
-	def render("success.json", _) do
+	def render("success.json", %{"jwt" => jwt}) do
 		%{
-			success: true
+			"jwt" => jwt
 		}	
 	end
 
