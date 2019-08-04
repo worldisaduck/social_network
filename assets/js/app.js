@@ -10,7 +10,12 @@ import css from "../css/app.css"
 // Import dependencies
 //
 import "phoenix_html"
-
+import "axios"
+const axios = require("axios")
+window.axios = axios
+function getAxios() {
+	console.log(axios)
+}
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:

@@ -10,7 +10,9 @@ defmodule SocialNetworkWeb.Router do
   end
 
   pipeline :api do
+		plug CORSPlug, origin: "*"
     plug :accepts, ["json"]
+		plug :fetch_session
   end
 
   scope "/", SocialNetworkWeb do
@@ -23,7 +25,7 @@ defmodule SocialNetworkWeb.Router do
 		pipe_through :api
 
 		scope "/v1" do
-			post "/users/create", Api.V1.RegistrationController, :create
+			post "/sign-up", Api.V1.RegistrationController, :create
 		end
 	end
   # Other scopes may use custom stacks.

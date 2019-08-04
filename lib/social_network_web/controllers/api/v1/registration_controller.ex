@@ -8,14 +8,9 @@ defmodule SocialNetworkWeb.Api.V1.RegistrationController do
 
 	def create(conn, %{"user" => user_params}) do
 		with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
-			render(conn, "success.json")
-		else
-			{:error, changeset} ->	
-				errors = Enum.map(changeset.errors, fn(error) ->
-					value = elem(error, 1) |> elem(0)
-					%{elem(error, 0) => value}
-				end)
-			render(conn, "error.json", %{"errors" => errors})
+			conn
+			|> put_session(:current_user_id, user.id)
+			|> render("success.json")
 		end
 	end
 end

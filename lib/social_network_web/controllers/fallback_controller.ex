@@ -8,7 +8,7 @@ defmodule SocialNetworkWeb.FallbackController do
 
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
-    |> put_status(:unprocessable_entity)
+		|> put_status(:unprocessable_entity)
     |> put_view(SocialNetworkWeb.ChangesetView)
     |> render("error.json", changeset: changeset)
   end
