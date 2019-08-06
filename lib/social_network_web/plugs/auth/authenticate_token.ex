@@ -28,7 +28,7 @@ defmodule SocialNetworkWeb.Plugs.Auth.AuthenticateToken do
 	defp verify_signature(token) do
 		[encoded_header, encoded_payload, encoded_signature] = fetch_token_parts(token)	
 		IEx.pry
-		case Base.url_decode64!(encoded_signature) == Auth.signature(encoded_header, encoded_payload) do
+		case Base.url_decode64!(encoded_signature, padding: true) == Auth.signature(encoded_header, encoded_payload) do
 			true 	-> {:ok, token} 
 			false -> {:error, :invalid_token}
 		end
