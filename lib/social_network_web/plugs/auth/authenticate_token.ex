@@ -5,6 +5,8 @@ defmodule SocialNetworkWeb.Plugs.Auth.AuthenticateToken do
 
 	def init(opts), do: opts
 
+	def call(%Plug.Conn{path_info: ["api", "v1", "sign-up"]} = conn, _opts), do: conn
+
 	def call(conn, _opts) do
 		with {:ok, token} <- fetch_token_from_header(conn),
 				 {:ok, token} <- verify_token(token) do
