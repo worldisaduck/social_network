@@ -5,8 +5,9 @@ defmodule SocialNetworkWeb.FallbackController do
   See `Phoenix.Controller.action_fallback/1` for more details.
   """
   use SocialNetworkWeb, :controller
-
+	require IEx
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
+		IEx.pry
     conn
 		|> put_status(:unprocessable_entity)
     |> put_view(SocialNetworkWeb.ChangesetView)

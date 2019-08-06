@@ -15,6 +15,10 @@ defmodule SocialNetworkWeb.Router do
 		plug :fetch_session
   end
 
+	pipeline :jwt_auth do
+		plug SocialNetworkWeb.Plugs.Auth.AuthenticateToken 
+	end
+
   scope "/", SocialNetworkWeb do
     pipe_through :browser
 
@@ -22,7 +26,7 @@ defmodule SocialNetworkWeb.Router do
   end
 
 	scope "/api", SocialNetworkWeb do
-		pipe_through :api
+		pipe_through [:api, :jwt_auth]
 
 		scope "/v1" do
 			post "/sign-up", Api.V1.RegistrationController, :create
