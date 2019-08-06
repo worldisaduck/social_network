@@ -7,7 +7,7 @@ defmodule SocialNetworkWeb.Plugs.Auth.AuthenticateToken do
 
 	def call(conn, _opts) do
 		with {:ok, token} <- fetch_token_from_header(conn),
-				 {:ok, token} <- verify_signature(token) do
+				 {:ok, token} <- verify_token(token) do
 			conn
 		else
 			:no_token_found ->
@@ -25,16 +25,35 @@ defmodule SocialNetworkWeb.Plugs.Auth.AuthenticateToken do
   	end
 	end
 
-	defp verify_signature(token) do
-		[encoded_header, encoded_payload, encoded_signature] = fetch_token_parts(token)	
-		IEx.pry
+	defp verify_token(token) do
+		splited_token = String.split(token, ".")
+		[encoded_header, encoded_payload, encoded_signature] = splited_token
+		with :ok <- decode_and_verify_signature(splited_token),
+				 :ok <- decode_and_verify_claims(encoded_payload) do
+			{:ok, token}
+		else
+			{:error, :invalid_token} ->
+				{:error, :invalid_token}
+		end
+	end
+
+	defp decode_and_verify_signature(splited_token) do
+		[encoded_header, encoded_payload, encoded_signature] = splited_token
 		case Base.url_decode64!(encoded_signature, padding: true) == Auth.signature(encoded_header, encoded_payload) do
-			true 	-> {:ok, token} 
+			true 	-> :ok
 			false -> {:error, :invalid_token}
 		end
 	end
 
-	defp fetch_token_parts(token) do
-		token |> String.split(".")
+	defp decode_and_verify_claims(claims) do
+		case claims |> Base.url_decode64!(padding: false) |> Jason.decode! |> Map.get("exp") do
+			nil -> :ok
+			exp_at_in_sec ->
+				if exp_at_in_sec > DateTime.to_unix(DateTime.utc_now) do
+					:ok
+				else
+					{:error, :invalid_token}
+				end
+		end
 	end
 end

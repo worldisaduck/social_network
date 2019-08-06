@@ -1,8 +1,8 @@
 defmodule SocialNetwork.Auth do
 	def encode_and_sign(user, params \\ %{}) do
-		encoded_header = header |> Jason.encode! |> Base.url_encode64
-		encoded_payload = user |> payload |> Jason.encode! |> Base.url_encode64
-		encoded_signature = signature(encoded_header, encoded_payload) |> Base.url_encode64
+		encoded_header = header |> Jason.encode! |> Base.url_encode64(padding: true)
+		encoded_payload = user |> payload |> Jason.encode! |> Base.url_encode64(padding: true)
+		encoded_signature = signature(encoded_header, encoded_payload) |> Base.url_encode64(padding: true)
 
 		token = [encoded_header, encoded_payload, encoded_signature] |> Enum.join(".")
 		{:ok, token}
