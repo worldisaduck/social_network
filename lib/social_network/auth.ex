@@ -16,7 +16,7 @@ defmodule SocialNetwork.Auth do
 				 {:ok, _} <- Comeonin.Bcrypt.check_pass(user, pass) do
 			encode_and_sign(user)
 		else
-			nil   ->
+			nil ->
 				Comeonin.Bcrypt.dummy_checkpw
 				{:error, :unauthorized}
 			{:error, "invalid password"} -> {:error, :unauthorized}
