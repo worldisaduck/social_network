@@ -8,6 +8,17 @@ defmodule SocialNetwork.Auth do
 		{:ok, token}
 	end
 
+	def verify_and_sign(user, %{"username" => username, "passowrd" => pass, "pass_conf" => pass_conf}) do
+		with {:ok, user} <- Account.find_by_username(username),
+				 true <- pass == pass_conf,
+				 true <- Bcrypt.hash_pwd_salt(pass) do
+			encode_and_sign(user)
+		else
+			false ->
+				{:error, :unauthorized}
+		end
+	end
+
 	def verify_token(token) do
 		splited_token = String.split(token, ".")
 		[encoded_header, encoded_payload, encoded_signature] = splited_token

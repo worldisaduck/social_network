@@ -20,4 +20,10 @@ defmodule SocialNetworkWeb.FallbackController do
     |> put_view(SocialNetworkWeb.ErrorView)
     |> render(:"404")
   end
+
+	def call(conn, {:error, :unauthorized}) do
+		conn
+		|> put_status(:unauthorized)
+		|> json(%{error: "login error"})
+	end
 end
