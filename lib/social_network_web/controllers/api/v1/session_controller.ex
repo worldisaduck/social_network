@@ -1,5 +1,6 @@
 defmodule SocialNetworkWeb.Api.V1.SessionController do
 	use SocialNetworkWeb, :controller
+	alias SocialNetwork.Auth
 	require IEx
 	action_fallback SocialNetworkWeb.FallbackController
 

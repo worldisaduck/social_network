@@ -9,7 +9,7 @@ defmodule SocialNetwork.Accounts do
   alias SocialNetwork.Accounts.User
 
 	def find_by_username(username) do
-		Repo.one(from u in User, where: u.username == username)
+		Repo.one(from u in User, where: u.username == ^username)
 	end
 
   @doc """
