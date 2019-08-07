@@ -1,6 +1,5 @@
 defmodule SocialNetwork.Auth do
 	alias SocialNetwork.Accounts
-	require IEx
 
 	def encode_and_sign(user, params \\ %{}) do
 		encoded_header = header |> Jason.encode! |> Base.url_encode64(padding: true)
@@ -12,13 +11,15 @@ defmodule SocialNetwork.Auth do
 	end
 
 	def verify_and_sign(%{"username" => username, "password" => pass, "password_confirmation" => pass_conf}) do
-		IEx.pry
 		with %SocialNetwork.Accounts.User{} = user <- Accounts.find_by_username(username),
 				 true <- pass == pass_conf,
-				 true <- Bcrypt.hash_pwd_salt(pass) == user.encrypted_password do
+				 {:ok, _} <- Comeonin.Bcrypt.check_pass(user, pass) do
 			encode_and_sign(user)
 		else
-			nil   -> {:error, :unauthorized}
+			nil   ->
+				Comeonin.Bcrypt.dummy_checkpw
+				{:error, :unauthorized}
+			{:error, "invalid password"} -> {:error, :unauthorized}
 			false -> {:error, :unauthorized}
 		end
 	end
