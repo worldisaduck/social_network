@@ -11,9 +11,10 @@ defmodule SocialNetwork.Application do
       # Start the Ecto repository
       SocialNetwork.Repo,
       # Start the endpoint when the application starts
-      SocialNetworkWeb.Endpoint
+      SocialNetworkWeb.Endpoint,
       # Starts a worker by calling: SocialNetwork.Worker.start_link(arg)
       # {SocialNetwork.Worker, arg},
+			{Absinthe.Subscription, [SocialNetworkWeb.Endpoint]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

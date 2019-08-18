@@ -19,6 +19,8 @@ defmodule SocialNetworkWeb.Router do
 		plug SocialNetworkWeb.Plugs.Auth.AuthenticateToken 
 	end
 
+	forward "/graphiql", Absinthe.Plug.GraphiQL, schema: SocialNetwork.Schema
+
   scope "/", SocialNetworkWeb do
     pipe_through :browser
 

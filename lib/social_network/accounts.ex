@@ -21,8 +21,8 @@ defmodule SocialNetwork.Accounts do
       [%User{}, ...]
 
   """
-  def list_users do
-    Repo.all(User)
+  def list_users(_, _) do
+    {:ok, Repo.all(User)}
   end
 
   @doc """

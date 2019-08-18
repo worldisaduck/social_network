@@ -1,5 +1,6 @@
 defmodule SocialNetworkWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :social_network
+	use Absinthe.Phoenix.Endpoint
 
   socket "/socket", SocialNetworkWeb.UserSocket,
     websocket: true,
