@@ -45,7 +45,9 @@ defmodule SocialNetwork.MixProject do
       {:plug_cowboy, "~> 2.0"},
 			{:comeonin, "~> 4.0"},
 			{:bcrypt_elixir, "~> 1.0"},
-			{:cors_plug, "~> 1.5"}
+			{:cors_plug, "~> 1.5"},
+			{:absinthe_plug, "~> 1.4"},
+			{:absinthe_phoenix, "~> 1.4"}
     ]
   end
 
