@@ -10,9 +10,8 @@ defmodule SocialNetwork.Auth do
 		{:ok, %{user | jwt: token}}
 	end
 
-	def verify_and_sign(%{"username" => username, "password" => pass, "password_confirmation" => pass_conf}) do
+	def verify_and_sign(%{username: username, password: pass}) do
 		with %SocialNetwork.Accounts.User{} = user <- Accounts.find_by_username(username),
-				 true <- pass == pass_conf,
 				 {:ok, _} <- Comeonin.Bcrypt.check_pass(user, pass) do
 			encode_and_sign(user)
 		else

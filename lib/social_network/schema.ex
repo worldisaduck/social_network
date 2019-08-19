@@ -22,7 +22,21 @@ defmodule SocialNetwork.Schema do
 					{:ok, user}
 				else
 					{:error, error} ->
-						{:error, ["errors", "more errors"] } 
+						{:error, ["errors", "more errors"]} 
+				end
+			end
+		end
+
+		field :sign_in, :user do
+			arg :username, non_null(:string)
+			arg :password, non_null(:string)
+			
+			resolve fn params, _ ->
+				with {:ok, user} <- Auth.verify_and_sign(params) do
+					{:ok, user}
+				else
+					{:error, error} ->
+						{:error, ["errors", "more errors"]} 
 				end
 			end
 		end
