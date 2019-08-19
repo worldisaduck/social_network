@@ -3,7 +3,7 @@ defmodule SocialNetwork.Accounts.Profile do
   import Ecto.Changeset
 
 	schema "profiles" do
-		field :firs_name, :string
+		field :first_name, :string
 		field :surname, :string
 		field :patronymic, :string
 		field :date_of_birh, :date
@@ -14,5 +14,10 @@ defmodule SocialNetwork.Accounts.Profile do
 		belongs_to :user, SocialNetwork.Accounts.User
 
 		timestamps()	
+	end
+
+	def changeset(profile, params) do
+		profile
+		|> cast(params, [:first_name, :surname, :patronymic, :date_of_birh, :gender, :city_of_origin, :city_of_origin, :info, :user_id])
 	end
 end

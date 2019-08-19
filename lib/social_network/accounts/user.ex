@@ -8,6 +8,8 @@ defmodule SocialNetwork.Accounts.User do
 
 		field :password, :string, virtual: true
 		field :password_confirmation, :string, virtual: true
+		field :jwt, :string
+		has_one :profile, SocialNetwork.Accounts.Profile
 
 		timestamps()
 	end
@@ -16,6 +18,7 @@ defmodule SocialNetwork.Accounts.User do
 	def changeset(user, attrs) do
 		user
 		|> cast(attrs, [:username, :password, :password_confirmation])
+		|> cast_assoc(:profile, with: &SocialNetwork.Accounts.Profile.changeset/2)
 		|> validate_required([:username, :password, :password_confirmation])
 		|> validate_length(:password, min: 6)
 		|> validate_confirmation(:password)
