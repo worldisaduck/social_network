@@ -1,6 +1,7 @@
 defmodule SocialNetwork.Schema do
 	use Absinthe.Schema
 	alias SocialNetwork.Accounts
+	alias SocialNetwork.Auth
 	require IEx
 
 	query do
@@ -15,14 +16,21 @@ defmodule SocialNetwork.Schema do
 			arg :password, non_null(:string)
 			arg :password_confirmation, non_null(:string)
 
-			resolve fn args, _ ->
-				{:ok, SocialNetwork.Accounts.User |> SocialNetwork.Repo.all |> List.first}
+			resolve fn params, _ ->
+				with {:ok, user} <- Accounts.create_user(params),
+						 {:ok, user} <- Auth.encode_and_sign(user) do
+					{:ok, user}
+				else
+					{:error, error} ->
+						{:error, ["errors", "more errors"] } 
+				end
 			end
 		end
 	end
 
 	object :user do
 		field :id, :id
+		field :jwt, :string
 		field :username, :string
 		field :password, :string
 		field :password_confirmation, :string

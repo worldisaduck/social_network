@@ -7,7 +7,7 @@ defmodule SocialNetwork.Auth do
 		encoded_signature = signature(encoded_header, encoded_payload) |> Base.url_encode64(padding: true)
 
 		token = [encoded_header, encoded_payload, encoded_signature] |> Enum.join(".")
-		{:ok, token}
+		{:ok, %{user | jwt: token}}
 	end
 
 	def verify_and_sign(%{"username" => username, "password" => pass, "password_confirmation" => pass_conf}) do
