@@ -40,6 +40,22 @@ defmodule SocialNetwork.Schema do
 				end
 			end
 		end
+
+		field :update_profile, :profile do
+			arg :user_id, non_null(:integer)
+			arg :first_name, :string
+			arg :surname, :string
+			arg :patronymic, :string
+			arg :date_of_birth, :string
+			arg :gender, :string
+			arg :city_of_origin, :string
+			arg :city_of_living, :string
+			arg :info, :string
+
+			resolve fn params, _ ->
+				Accounts.update_user_profile(params)
+			end
+		end
 	end
 
 	object :user do
@@ -48,5 +64,10 @@ defmodule SocialNetwork.Schema do
 		field :username, :string
 		field :password, :string
 		field :password_confirmation, :string
+	end
+
+	object :profile do
+		field :first_name, :string
+		field :lastname, :string
 	end
 end

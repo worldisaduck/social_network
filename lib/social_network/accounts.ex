@@ -2,11 +2,18 @@ defmodule SocialNetwork.Accounts do
   @moduledoc """
   The Accounts context.
   """
-
   import Ecto.Query, warn: false
   alias SocialNetwork.Repo
+  alias SocialNetwork.Accounts.{User, Profile}
 
-  alias SocialNetwork.Accounts.User
+	@doc """
+	Return user found by username
+
+	## Example
+			iex> find_by_username("Bob")
+			%User{username: "Bob"}
+
+	"""
 
 	def find_by_username(username) do
 		Repo.one(from u in User, where: u.username == ^username)
@@ -55,7 +62,7 @@ defmodule SocialNetwork.Accounts do
   """
   def create_user(attrs \\ %{}) do
     %User{}
-    |> User.changeset(attrs)
+    |> User.changeset(Map.merge(attrs, %{profile: %{}}))
     |> Repo.insert()
   end
 
@@ -76,6 +83,12 @@ defmodule SocialNetwork.Accounts do
     |> User.changeset(attrs)
     |> Repo.update()
   end
+
+	def update_user_profile(%{user_id: user_id} = params) do
+		Repo.one(from p in Profile, where: p.user_id == ^user_id)
+		|> Profile.changeset(params)
+		|> Repo.update
+	end
 
   @doc """
   Deletes a User.
