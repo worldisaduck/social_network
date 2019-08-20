@@ -53,7 +53,12 @@ defmodule SocialNetwork.Schema do
 			arg :info, :string
 
 			resolve fn params, _ ->
-				Accounts.update_user_profile(params)
+				with {:ok, user} <- Accounts.update_user_profile(params) do
+					{:ok, user}
+				else
+					{:error, error} ->
+						{:error, "error"}
+				end
 			end
 		end
 	end
@@ -64,10 +69,17 @@ defmodule SocialNetwork.Schema do
 		field :username, :string
 		field :password, :string
 		field :password_confirmation, :string
+		field :profile, :profile
 	end
 
 	object :profile do
 		field :first_name, :string
-		field :lastname, :string
+		field :surname, :string
+		field :patronymic, :string
+		field :date_of_birth, :string
+		field :gender, :string
+		field :city_of_living, :string
+		field :city_of_origin, :string
+		field :info, :string
 	end
 end
