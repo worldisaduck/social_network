@@ -12,6 +12,8 @@ defmodule SocialNetwork.Repo.Migrations.CreatePrivacySettings do
 			add :send_messages, :string
 			add :friends, :string
 			add :friend_request, :string
+
+			timestamps()
 		end
   end
 end
