@@ -4,14 +4,14 @@ defmodule SocialNetwork.Repo.Migrations.CreatePrivacySettings do
   def change do
 		create table(:privacy_settings) do
 			add :profile_id, references(:profiles)
-			add :profile_type, :string
-			add :photo_albums, :string
-			add :posts, :string
-			add :groups, :string
-			add :comments, :string
-			add :send_messages, :string
-			add :friends, :string
-			add :friend_request, :string
+			add :profile_type, :string, default: "public"
+			add :photo_albums, :string, default: "everyone"
+			add :posts, :string, default: "everyone"
+			add :groups, :string, default: "everyone"
+			add :comments, :string, default: "everyone"
+			add :send_messages, :string, default: "everyone"
+			add :friends, :string, default: "everyone"
+			add :friend_request, :string, default: "everyone"
 
 			timestamps()
 		end
