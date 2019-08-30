@@ -4,7 +4,31 @@ defmodule SocialNetwork.Accounts do
   """
   import Ecto.Query, warn: false
   alias SocialNetwork.Repo
-  alias SocialNetwork.Accounts.{User, Profile}
+  alias SocialNetwork.Accounts.{User, Profile, Friend}
+
+  def friends_and_subs(user_id) do
+    related_ppl_ids = Repo.all(
+                    from f in Friend,
+                    where: f.first_user_id == 2 or f.second_user_id == 2,
+                    group_by: [f.first_user_id, f.second_user_id],
+                    select: {f.first_user_id, f.second_user_id, sum(f.action)}
+                  )
+                  |> Enum.map(fn person -> 
+                      case person do
+                        {user_id, friend_id, 2} -> friend_id
+                        {friend_id, user_id, 2} -> friend_id
+                        {user_id, friend_id, 1} -> friend_id
+                        {friend_id, user_id, 1} -> friend_id
+                      end
+                     end
+                  )
+
+     Repo.all(from u in User, where: u.id in ^related_ppl_ids)
+  end
+
+  def add_friend(user_id, friend_id) do
+
+  end
 
 	@doc """
 	Return user found by username
