@@ -11,7 +11,8 @@ defmodule SocialNetwork.Accounts do
                     from f in Friend,
                     where: f.first_user_id == 2 or f.second_user_id == 2,
                     group_by: [f.first_user_id, f.second_user_id],
-                    select: {f.first_user_id, f.second_user_id, sum(f.action)}
+                    select: {f.first_user_id, f.second_user_id, sum(f.action)},
+                    having: sum(f.action) > 0
                   )
                   |> Enum.map(fn person -> 
                       case person do
