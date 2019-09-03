@@ -1,6 +1,7 @@
 defmodule SocialNetwork.Accounts.User do
 	use Ecto.Schema
 	import Ecto.Changeset
+  alias SocialNetwork.Accounts.Friend
 
 	schema "users" do
 		field :encrypted_password, :string

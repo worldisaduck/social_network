@@ -7,24 +7,13 @@ defmodule SocialNetwork.Accounts do
   alias SocialNetwork.Accounts.{User, Profile, Friend}
 
   def friends_and_subs(user_id) do
-    related_ppl_ids = Repo.all(
-                    from f in Friend,
-                    where: f.first_user_id == 2 or f.second_user_id == 2,
-                    group_by: [f.first_user_id, f.second_user_id],
-                    select: {f.first_user_id, f.second_user_id, sum(f.action)},
-                    having: sum(f.action) > 0
-                  )
-                  |> Enum.map(fn person -> 
-                      case person do
-                        {user_id, friend_id, 2} -> friend_id
-                        {friend_id, user_id, 2} -> friend_id
-                        {user_id, friend_id, 1} -> friend_id
-                        {friend_id, user_id, 1} -> friend_id
-                      end
-                     end
-                  )
-
-     Repo.all(from u in User, where: u.id in ^related_ppl_ids)
+    Repo.all(
+      from f in Friend,
+      join: u in User,
+      where: u.id == f.first_user_id or u.id == f.second_user_id,
+      where: u.id != ^user_id and (f.first_user_id == ^user_id or f.second_user_id == ^user_id),
+      select: %{user: u, state: f.state}
+    )
   end
 
   def add_friend(user_id, friend_id) do

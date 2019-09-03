@@ -8,6 +8,14 @@ defmodule SocialNetwork.Schema do
 		field :all_users, list_of(:user) do
 			resolve &Accounts.list_users/2
 		end
+
+    field :get_friends, list_of(:friend) do
+      arg :user_id, non_null(:integer)
+
+      resolve fn params, _ ->
+        {:ok, Accounts.friends_and_subs(params.user_id)}
+      end
+    end
 	end
 
 	mutation do
@@ -41,6 +49,7 @@ defmodule SocialNetwork.Schema do
 			end
 		end
 
+
 		field :update_profile, :profile do
 			arg :user_id, non_null(:integer)
 			arg :first_name, :string
@@ -62,6 +71,11 @@ defmodule SocialNetwork.Schema do
 			end
 		end
 	end
+
+  object :friend do
+    field :state, :string
+    field :user, :user
+  end
 
 	object :user do
 		field :id, :id

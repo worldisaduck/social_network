@@ -5,7 +5,7 @@ defmodule SocialNetwork.Repo.Migrations.CreateFriends do
     create table(:friends, primary_key: false) do
       add :first_user_id, :integer, null: false
       add :second_user_id, :integer, null: false
-      add :action, :integer, default: 1
+      add :state, :string, null: false
 
       timestamps()
     end
