@@ -8,7 +8,7 @@ defmodule SocialNetworkWeb.FallbackController do
 
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
-		|> put_status(:unprocessable_entity)
+    |> put_status(:unprocessable_entity)
     |> put_view(SocialNetworkWeb.ChangesetView)
     |> render("error.json", changeset: changeset)
   end
@@ -20,9 +20,9 @@ defmodule SocialNetworkWeb.FallbackController do
     |> render(:"404")
   end
 
-	def call(conn, {:error, :unauthorized}) do
-		conn
-		|> put_status(:unauthorized)
-		|> json(%{error: "login error"})
-	end
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:unauthorized)
+    |> json(%{error: "login error"})
+  end
 end

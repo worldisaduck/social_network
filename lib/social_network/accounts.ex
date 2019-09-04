@@ -28,9 +28,9 @@ defmodule SocialNetwork.Accounts do
 
 	"""
 
-	def find_by_username(username) do
-		Repo.one(from u in User, where: u.username == ^username, preload: :profile)
-	end
+  def find_by_username(username) do
+    Repo.one(from u in User, where: u.username == ^username, preload: :profile)
+  end
 
   @doc """
   Returns the list of users.
@@ -97,11 +97,11 @@ defmodule SocialNetwork.Accounts do
     |> Repo.update()
   end
 
-	def update_user_profile(%{user_id: user_id} = params) do
-		Repo.one(from p in Profile, where: p.user_id == ^user_id)
-		|> Profile.changeset(params)
-		|> Repo.update
-	end
+  def update_user_profile(%{user_id: user_id} = params) do
+    Repo.one(from p in Profile, where: p.user_id == ^user_id)
+    |> Profile.changeset(params)
+    |> Repo.update
+  end
 
   @doc """
   Deletes a User.

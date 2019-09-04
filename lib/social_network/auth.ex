@@ -52,7 +52,7 @@ defmodule SocialNetwork.Auth do
   defp header do
     %{
       "alg" => "HS256",
-        "typ" => "JWT"
+      "typ" => "JWT"
     }
   end
 
