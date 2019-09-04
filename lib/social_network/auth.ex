@@ -19,7 +19,7 @@ defmodule SocialNetwork.Auth do
 				Comeonin.Bcrypt.dummy_checkpw
 				{:error, :unauthorized}
 			{:error, "invalid password"} -> {:error, :unauthorized}
-			false -> {:error, :unauthorized}
+        false -> {:error, :unauthorized}
 		end
 	end
 
@@ -68,7 +68,7 @@ defmodule SocialNetwork.Auth do
 
   defp decode_payload(token) do
 		[_, encoded_payload, _] = split_token(token)
-    payload = encoded_payload
+    encoded_payload
     |> Base.url_decode64!
     |> Jason.decode!
   end
