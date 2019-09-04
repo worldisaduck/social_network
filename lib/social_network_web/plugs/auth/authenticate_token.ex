@@ -1,7 +1,9 @@
 defmodule SocialNetworkWeb.Plugs.Auth.AuthenticateToken do
+  @behaviour Plug
+
 	import Plug.Conn
 	alias SocialNetwork.Auth
-	require IEx
+  alias SocialNetwork.Accounts.User
 
 	def init(opts), do: opts
 
@@ -11,13 +13,14 @@ defmodule SocialNetworkWeb.Plugs.Auth.AuthenticateToken do
 
 	def call(conn, _opts) do
 		with {:ok, token} <- fetch_token_from_header(conn),
-				 {:ok, token} <- Auth.verify_token(token) do
-			conn
+				 {:ok, token} <- Auth.verify_token(token),
+         %User{} = current_user <- Auth.authorize(token) do
+			Absinthe.Plug.put_options(conn, %{context: %{current_user: current_user}})
 		else
 			:no_token_found ->
-				send_resp(conn, 401, "no token found")	
+        Absinthe.Plug.put_options(conn, %{context: %{current_user: %{}}})
 			{:error, :invalid_token} ->
-				send_resp(conn, 401, "invalid token")	
+        Absinthe.Plug.put_options(conn, %{context: %{current_user: %{}}})
 		end
 	end
 

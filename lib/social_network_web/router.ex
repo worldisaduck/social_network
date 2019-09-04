@@ -19,23 +19,13 @@ defmodule SocialNetworkWeb.Router do
 		plug SocialNetworkWeb.Plugs.Auth.AuthenticateToken 
 	end
 
-	forward "/graphiql", Absinthe.Plug.GraphiQL, schema: SocialNetwork.Schema
 
-  scope "/", SocialNetworkWeb do
-    pipe_through :browser
+  scope "/" do
+    pipe_through :jwt_auth
 
-    get "/", PageController, :index
+	  forward "/graphiql", Absinthe.Plug.GraphiQL, schema: SocialNetwork.Schema
   end
 
-	scope "/api", SocialNetworkWeb do
-		pipe_through [:api, :jwt_auth]
-
-		scope "/v1" do
-			resources "/users", UserController
-			post "/sign-up", Api.V1.RegistrationController, :create
-			post "/sign-in", Api.V1.SessionController, :create
-		end
-	end
   # Other scopes may use custom stacks.
   # scope "/api", SocialNetworkWeb do
   #   pipe_through :api

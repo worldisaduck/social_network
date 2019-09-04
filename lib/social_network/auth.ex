@@ -23,8 +23,19 @@ defmodule SocialNetwork.Auth do
 		end
 	end
 
+  def authorize(token) do
+    with {:ok, token} <- verify_token(token) do
+      decode_payload(token)
+      |> Map.get("sub")
+      |> Accounts.get_user!
+    else
+      {:error, :invalid_token} ->
+        {:error, :invalid_token}
+    end
+  end
+
 	def verify_token(token) do
-		splited_token = String.split(token, ".")
+    splited_token = split_token(token)
 		[encoded_header, encoded_payload, encoded_signature] = splited_token
 		with :ok <- decode_and_verify_signature(splited_token),
 				 :ok <- decode_and_verify_claims(encoded_payload) do
@@ -54,6 +65,17 @@ defmodule SocialNetwork.Auth do
 			"exp" => DateTime.to_unix(DateTime.utc_now) + 365 * 24 * 60 * 60
 		}
 	end
+
+  defp decode_payload(token) do
+		[_, encoded_payload, _] = split_token(token)
+    payload = encoded_payload
+    |> Base.url_decode64!
+    |> Jason.decode!
+  end
+
+  defp split_token(token) do
+		String.split(token, ".")
+  end
 
 	defp decode_and_verify_signature(splited_token) do
 		[encoded_header, encoded_payload, encoded_signature] = splited_token

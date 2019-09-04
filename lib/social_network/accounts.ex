@@ -17,7 +17,6 @@ defmodule SocialNetwork.Accounts do
   end
 
   def add_friend(user_id, friend_id) do
-
   end
 
 	@doc """

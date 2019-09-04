@@ -2,7 +2,7 @@ defmodule SocialNetwork.Schema do
 	use Absinthe.Schema
 	alias SocialNetwork.Accounts
 	alias SocialNetwork.Auth
-	require IEx
+  alias SocialNetwork.Accounts.User
 
 	query do
 		field :all_users, list_of(:user) do
@@ -10,10 +10,11 @@ defmodule SocialNetwork.Schema do
 		end
 
     field :get_friends, list_of(:friend) do
-      arg :user_id, non_null(:integer)
-
-      resolve fn params, _ ->
-        {:ok, Accounts.friends_and_subs(params.user_id)}
+      resolve fn _, %{context: %{current_user: current_user}} ->
+        case current_user do
+          %User{} -> {:ok, Accounts.friends_and_subs(current_user.id)}
+          %{} -> {:error, ["errors", "more errors"]}
+        end
       end
     end
 	end
